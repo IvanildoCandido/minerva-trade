@@ -4,6 +4,7 @@ import { Template } from './components/MainComponents';
 import Routes from './Routes';
 import Header from './components/partials/Header';
 import Footer from './components/partials/Footer';
+import './App.css';
 
 const App = (props) => {
   return (
