@@ -1,15 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Template } from './components/MainComponents';
 import Routes from './Routes';
+import Header from './components/partials/Header';
+import Footer from './components/partials/Footer';
 
-function App(props) {
+const App = (props) => {
   return (
-    <div>
-      <h1>Minerva Trade System | {props.user.user.email}</h1>
+    <Template>
+      <Header />
       <Routes />
-    </div>
+      <Footer />
+    </Template>
   );
-}
+};
 const mapStateToProps = (state) => {
   return {
     user: state.user,
