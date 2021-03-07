@@ -1,9 +1,15 @@
+import React from 'react';
+import { connect } from 'react-redux';
 
-
-function App() {
-  return (
-    <h1>Minerva Trade System</h1>
-  );
+function App(props) {
+  return <h1>Minerva Trade System | {props.user.user.email}</h1>;
 }
-
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(App);
