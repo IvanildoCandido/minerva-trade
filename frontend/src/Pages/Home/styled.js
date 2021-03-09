@@ -42,5 +42,28 @@ export const SearchArea = styled.div`
       }
     }
   }
+  .category-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    .category-item {
+      width: 25%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: black;
+      text-decoration: none;
+      height: 50px;
+      margin-bottom: 10px;
+      &:hover {
+        color: #999;
+      }
+      img {
+        width: 45px;
+        height: 45px;
+        margin-right: 10px;
+      }
+    }
+  }
 `;
 export const PageArea = styled.div``;
