@@ -30,14 +30,20 @@ const Signin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setDisabled(true);
-    const json = await API.login(email, password);
-    // if (json.error) {
-    //   setError(json.error);
-    // } else {
-    //   doLogin(json.token, remember);
-    //   window.location.href = '/';
-    // }
-    // setDisabled(false);
+    setError('');
+    if (password !== confirmPassword) {
+      setError('Senhas não conferem');
+      setDisabled(false);
+      return;
+    }
+    const json = await API.register(name, email, password, stateLocation);
+    if (json.error) {
+      setError(json.error);
+    } else {
+      doLogin(json.token);
+      window.location.href = '/';
+    }
+    setDisabled(false);
   };
 
   return (
