@@ -1,11 +1,32 @@
 import React from 'react';
+import { PageContainer } from '../../components/MainComponents';
+import { SearchArea, PageArea } from './styled';
+import MinervaAPI from '../../helpers/MinervaTradeAPI';
 
-function Home(props) {
+const Signin = () => {
+  const API = MinervaAPI();
+
   return (
-    <div>
-      <h1>Página Home</h1>
-    </div>
-  );
-}
+    <>
+      <SearchArea>
+        <PageContainer>
+          <div className="search-box">
+            <form method="GET" action="/ads">
+              <input type="text" name="q" placeholder="O que você procura?"/>
+              <select name="state">
 
-export default Home;
+              </select>
+              <button>Pesquisar</button>
+            </form>
+          </div>
+          <div className="category-list"></div>
+        </PageContainer>
+      </SearchArea>
+      <PageContainer>
+        <PageArea>...</PageArea>
+      </PageContainer>
+    </>
+  );
+};
+
+export default Signin;
