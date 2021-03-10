@@ -3,12 +3,14 @@ import { PageContainer } from '../../components/MainComponents';
 import { SearchArea, PageArea } from './styled';
 import MinervaAPI from '../../helpers/MinervaTradeAPI';
 import { Link } from 'react-router-dom';
+import AdItem from '../../components/partials/AdItem';
 
 const Signin = () => {
   const API = MinervaAPI();
 
   const [stateList, setStateList] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [adList, setAdList] = useState([]);
 
   useEffect(() => {
     const getStates = async () => {
@@ -16,14 +18,24 @@ const Signin = () => {
       setStateList(sList);
     };
     getStates();
-  });
+  },[]);
   useEffect(() => {
     const getCategories = async () => {
       const cats = await API.getCategories();
       setCategories(cats);
     };
     getCategories();
-  });
+  },[]);
+  useEffect(() => {
+    const getRecentAds = async () => {
+      const json = await API.getAds({
+        sort: 'desc',
+        limit: 8,
+      });
+      setAdList(json.ads);
+    };
+    getRecentAds();
+  },[]);
 
   return (
     <>
@@ -57,7 +69,19 @@ const Signin = () => {
         </PageContainer>
       </SearchArea>
       <PageContainer>
-        <PageArea>...</PageArea>
+        <PageArea>
+          <h2>Anúncios Recentes</h2>
+          <div className="list">
+            {adList.map((ad, index) => (
+              <AdItem key={index} data={ad} />
+            ))}
+          </div>
+          <Link to="/ads" className="see-all-link">
+            Ver Todos
+          </Link>
+          <hr />
+          ...
+        </PageArea>
       </PageContainer>
     </>
   );

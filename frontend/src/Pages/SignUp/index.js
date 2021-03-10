@@ -74,7 +74,7 @@ const Signin = () => {
               >
                 <option></option>
                 {stateList.map((state, index) => (
-                  <option key={state.index} value={state._id}>
+                  <option key={index} value={state._id}>
                     {state.name}
                   </option>
                 ))}
