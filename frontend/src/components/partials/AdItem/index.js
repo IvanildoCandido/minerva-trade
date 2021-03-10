@@ -16,9 +16,7 @@ const AdItem = (props) => {
   return (
     <Item className="ad-items">
       <Link to={`/ad/${id}`}>
-        <div className="item-image">
-          <img src={image} alt="" />
-        </div>
+        <div className="item-image">{image && <img src={image} alt="" />}</div>
         <div className="item-name">{title}</div>
         <div className="item-price">{priceItem}</div>
       </Link>
