@@ -6,7 +6,7 @@ import Home from './Pages/Home';
 import NotFound from './Pages/NotFound';
 import Signin from './Pages/Signin';
 import SignUp from './Pages/SignUp';
-import AdPage from './Pages/AdPage';
+import AddAd from './Pages/AddAd';
 const Routes = () => {
   return (
     <Switch>
@@ -17,7 +17,7 @@ const Routes = () => {
         <About />
       </MyRoute>
       <MyRoute private exact path="/post-an-ad">
-        <About />
+        <AddAd />
       </MyRoute>
       <MyRoute component={NotFound} />
     </Switch>
