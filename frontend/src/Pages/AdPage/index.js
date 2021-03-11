@@ -13,14 +13,15 @@ const AdPage = () => {
   const [loading, setLoading] = useState(true);
   const [adInfo, setAdInfo] = useState({});
 
+  const geAdtInfo = async (id) => {
+    const json = await API.getAd(id, true);
+    setAdInfo(json);
+    setLoading(false);
+  };
   useEffect(() => {
-    const geAdtInfo = async (id) => {
-      const json = await API.getAd(id, true);
-      setAdInfo(json);
-      setLoading(false);
-    };
     geAdtInfo(id);
-  }, []);
+  },[]);
+
   const formatDate = (date) => {
     return date;
   };
