@@ -93,6 +93,8 @@ export const OthersArea = styled.div`
   }
   .list {
     display: flex;
+    flex-wrap: wrap;
+    width: 25%;
     .ad-item {
       width: 25%;
     }

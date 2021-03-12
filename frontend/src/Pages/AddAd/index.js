@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   PageContainer,
   PageTitle,
@@ -12,6 +13,7 @@ import createNumberMask from 'text-mask-addons/dist/createNumberMask';
 const Signin = () => {
   const API = MinervaAPI();
   const fileField = useRef();
+  const history = useHistory();
 
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
@@ -32,15 +34,37 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setDisabled(true);
-    // const json = await API.login(email, password);
-    // if (json.error) {
-    //   setError(json.error);
-    // } else {
-    //   doLogin(json.token, remember);
-    //   window.location.href = '/';
-    // }
+    setError('');
+    let errors = [];
+    if (!title.trim()) {
+      errors.push('O título é obrigatório!');
+    }
+    if (!category) {
+      errors.push('A categoria é obrigatória!');
+    }
+    if (errors.length === 0) {
+      const fData = new FormData();
+      fData.append('title', title);
+      fData.append('price', price);
+      fData.append('priceneg', priceNegotiable);
+      fData.append('desc', description);
+      fData.append('cat', category);
+      if (fileField.current.files.length > 0) {
+        for (let i = 0; i < fileField.current.files.length; i++) {
+          fData.append('img', fileField.current.files[i]);
+        }
+      }
+      const json = await API.addAd(fData);
+      if (!json.error) {
+        history.push(`/ad/${json.id}`);
+        return;
+      } else {
+        setError(json.error);
+      }
+    } else {
+      setError(errors.join('\n'));     
+    }
     setDisabled(false);
   };
   const priceMask = createNumberMask({
