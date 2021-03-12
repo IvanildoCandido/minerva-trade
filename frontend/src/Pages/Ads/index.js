@@ -5,6 +5,8 @@ import MinervaAPI from '../../helpers/MinervaTradeAPI';
 import { useLocation, useHistory } from 'react-router-dom';
 import AdItem from '../../components/partials/AdItem';
 
+let timer;
+const TIME_WAIT_REQUEST = 500;
 const Signin = () => {
   const API = MinervaAPI();
   const history = useHistory();
@@ -23,6 +25,19 @@ const Signin = () => {
   const [stateList, setStateList] = useState([]);
   const [categories, setCategories] = useState([]);
   const [adList, setAdList] = useState([]);
+  const [resultOpacity, setResultOpacity] = useState(1);
+
+  const getAdsList = async () => {
+    const json = await API.getAds({
+      sort: 'desc',
+      limit: 9,
+      q,
+      cat,
+      state,
+    });
+    setAdList(json.ads);
+    setResultOpacity(1);
+  };
 
   useEffect(() => {
     let queryString = [];
@@ -38,6 +53,11 @@ const Signin = () => {
     history.replace({
       search: `?${queryString.join('&')}`,
     });
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(getAdsList, TIME_WAIT_REQUEST);
+    setResultOpacity(0.3);
   }, [q, cat, state]);
 
   useEffect(() => {
@@ -53,16 +73,6 @@ const Signin = () => {
       setCategories(cats);
     };
     getCategories();
-  }, []);
-  useEffect(() => {
-    const getRecentAds = async () => {
-      const json = await API.getAds({
-        sort: 'desc',
-        limit: 8,
-      });
-      setAdList(json.ads);
-    };
-    getRecentAds();
   }, []);
 
   return (
@@ -110,7 +120,14 @@ const Signin = () => {
             </ul>
           </form>
         </div>
-        <div className="right-side">...</div>
+        <div className="right-side">
+          <h2>Resultados</h2>
+          <div className="list" style={{ opacity: resultOpacity }}>
+            {adList.map((item, index) => (
+              <AdItem key={index} data={item} />
+            ))}
+          </div>
+        </div>
       </PageArea>
     </PageContainer>
   );
