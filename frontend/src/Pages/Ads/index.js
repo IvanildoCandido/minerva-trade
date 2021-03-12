@@ -26,8 +26,10 @@ const Signin = () => {
   const [categories, setCategories] = useState([]);
   const [adList, setAdList] = useState([]);
   const [resultOpacity, setResultOpacity] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   const getAdsList = async () => {
+    setLoading(true);
     const json = await API.getAds({
       sort: 'desc',
       limit: 9,
@@ -37,6 +39,7 @@ const Signin = () => {
     });
     setAdList(json.ads);
     setResultOpacity(1);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -122,6 +125,10 @@ const Signin = () => {
         </div>
         <div className="right-side">
           <h2>Resultados</h2>
+          {loading && <div className="list-warning">Carregando...</div>}
+          {!loading && adList.length === 0 && (
+            <div className="list-warning">Nenhum resultado encontrado!</div>
+          )}
           <div className="list" style={{ opacity: resultOpacity }}>
             {adList.map((item, index) => (
               <AdItem key={index} data={item} />

@@ -55,6 +55,10 @@ export const PageArea = styled.div`
       margin-top: 0;
       font-size: 18px;
     }
+    .list-warning {
+      padding: 30px;
+      text-align: center;
+    }
     .list {
       display: flex;
       flex-wrap: wrap;
