@@ -7,6 +7,7 @@ import AdItem from '../../components/partials/AdItem';
 
 const Signin = () => {
   const API = MinervaAPI();
+  const history = useHistory();
   const useQueryString = () => {
     return new URLSearchParams(useLocation().search);
   };
@@ -22,6 +23,22 @@ const Signin = () => {
   const [stateList, setStateList] = useState([]);
   const [categories, setCategories] = useState([]);
   const [adList, setAdList] = useState([]);
+
+  useEffect(() => {
+    let queryString = [];
+    if (q) {
+      queryString.push(`q=${q}`);
+    }
+    if (cat) {
+      queryString.push(`cat=${cat}`);
+    }
+    if (state) {
+      queryString.push(`state=${state}`);
+    }
+    history.replace({
+      search: `?${queryString.join('&')}`,
+    });
+  }, [q, cat, state]);
 
   useEffect(() => {
     const getStates = async () => {
@@ -58,10 +75,15 @@ const Signin = () => {
               name="q"
               placeholder="O que você procura?"
               value={q}
+              onChange={(e) => setQ(e.target.value)}
               autoComplete="off"
             />
             <div className="filter-name">Estado:</div>
-            <select name="state" value={state}>
+            <select
+              name="state"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+            >
               <option></option>
               {stateList.map((state, index) => (
                 <option key={index} name={state.name}>
@@ -79,6 +101,7 @@ const Signin = () => {
                       ? 'category-item active'
                       : 'category-item'
                   }
+                  onClick={() => setCat(category.slug)}
                 >
                   <img src={category.img} alt="" />
                   <span>{category.name}</span>
