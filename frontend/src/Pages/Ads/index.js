@@ -27,20 +27,38 @@ const Signin = () => {
   const [adList, setAdList] = useState([]);
   const [resultOpacity, setResultOpacity] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [adsTotal, setAdsTotal] = useState(0);
+  const [pageCount, setPageCount] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const getAdsList = async () => {
     setLoading(true);
+    let offset = (currentPage - 1) * 9;
     const json = await API.getAds({
       sort: 'desc',
       limit: 9,
       q,
       cat,
       state,
+      offset,
     });
     setAdList(json.ads);
+    setAdsTotal(json.total);
     setResultOpacity(1);
     setLoading(false);
   };
+  useEffect(() => {
+    if (adList.length > 0) {
+      setPageCount(Math.ceil(adsTotal / adList.length));
+    } else {
+      setPageCount(0);
+    }
+  }, [adsTotal]);
+
+  useEffect(() => {
+    setResultOpacity(0.3);
+    getAdsList();
+  }, [currentPage]);
 
   useEffect(() => {
     let queryString = [];
@@ -61,6 +79,7 @@ const Signin = () => {
     }
     timer = setTimeout(getAdsList, TIME_WAIT_REQUEST);
     setResultOpacity(0.3);
+    setCurrentPage(1);
   }, [q, cat, state]);
 
   useEffect(() => {
@@ -77,6 +96,11 @@ const Signin = () => {
     };
     getCategories();
   }, []);
+
+  let pagination = [];
+  for (let i = 1; i <= pageCount; i++) {
+    pagination.push(i);
+  }
 
   return (
     <PageContainer>
@@ -125,13 +149,28 @@ const Signin = () => {
         </div>
         <div className="right-side">
           <h2>Resultados</h2>
-          {loading && <div className="list-warning">Carregando...</div>}
+          {loading && adList.length === 0 && (
+            <div className="list-warning">Carregando...</div>
+          )}
           {!loading && adList.length === 0 && (
             <div className="list-warning">Nenhum resultado encontrado!</div>
           )}
           <div className="list" style={{ opacity: resultOpacity }}>
             {adList.map((item, index) => (
               <AdItem key={index} data={item} />
+            ))}
+          </div>
+          <div className="pagination">
+            {pagination.map((item, index) => (
+              <div
+                key={index}
+                className={
+                  item === currentPage ? 'page-item active' : 'page-item'
+                }
+                onClick={() => setCurrentPage(item)}
+              >
+                {item}
+              </div>
             ))}
           </div>
         </div>
