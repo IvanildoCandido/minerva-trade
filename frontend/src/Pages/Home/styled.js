@@ -65,6 +65,28 @@ export const SearchArea = styled.div`
       }
     }
   }
+  @media (max-width: 600px) {
+    .search-box form {
+      flex-direction: column;
+      input {
+        padding: 10px;
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
+      select {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+    .category-list {
+      justify-content: center;
+      .category-item {
+        width: 50%;
+        flex-direction: column;
+        margin: 10px 0;
+      }
+    }
+  }
 `;
 export const PageArea = styled.div`
   h2 {
@@ -83,5 +105,10 @@ export const PageArea = styled.div`
     font-weight: bold;
     display: inline-block;
     margin-top: 10px;
+  }
+  @media (max-width: 600px) {
+    .list .ad-items {
+      width: 50%;
+    }
   }
 `;

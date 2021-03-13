@@ -53,4 +53,23 @@ export const PageArea = styled.div`
       }
     }
   }
+  @media (max-width: 600px) {
+    form {
+      .area {
+        flex-direction: column;
+        .area-title {
+          width: 100%;
+          text-align: left;
+        }
+        .area-input {
+          width: 100%;
+          margin-bottom: 10px;
+          button {
+            width: 100%;
+            padding: 10px;
+          }
+        }
+      }
+    }
+  }
 `;

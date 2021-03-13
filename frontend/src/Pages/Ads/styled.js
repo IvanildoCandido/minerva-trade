@@ -90,4 +90,26 @@ export const PageArea = styled.div`
       }
     }
   }
+  @media (max-width: 600px) {
+    & {
+      flex-direction: column;
+    }
+    .left-side {
+      width: auto;
+      margin: 10px;
+    }
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    li {
+      width: 50%;
+    }
+    .right-side {
+      margin: 10px;
+      .list .ad-items {
+        width: 50%;
+      }
+    }
+  }
 `;
