@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   PageContainer,
   PageTitle,
@@ -6,26 +7,38 @@ import {
 } from '../../components/MainComponents';
 import { PageArea } from './styled';
 import MinervaAPI from '../../helpers/MinervaTradeAPI';
-import { doLogin } from '../../helpers/AuthHandler';
 
-const Signin = () => {
+const MyAccount = () => {
   const API = MinervaAPI();
+  const history = useHistory();
   const [name, setName] = useState('');
   const [stateLocation, setStateLocation] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(true);
   const [error, setError] = useState('');
   const [stateList, setStateList] = useState([]);
 
-  useEffect(() => {
-    const getStatesLocation = async () => {
-      const sList = await API.getStates();
-      setStateList(sList);
-    };
+  const getStatesLocation = async () => {
+    const sList = await API.getStates();
+    setStateList(sList);
+  };
+
+  const setEditionMode = () => {
     getStatesLocation();
-  },[]);
+    setDisabled(false);
+  };
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const user = await API.getMe();
+      setEmail(user.email);
+      setName(user.name);
+      setStateLocation(user.state);
+    };
+    getUserData();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,19 +49,19 @@ const Signin = () => {
       setDisabled(false);
       return;
     }
-    const json = await API.register(name, email, password, stateLocation);
+    const json = await API.alterUser(name, password, stateLocation);
     if (json.error) {
       setError(json.error);
     } else {
-      doLogin(json.token);
-      window.location.href = '/';
+      alert('Dados alterados com sucesso!');
+      history.push('/');
     }
     setDisabled(false);
   };
 
   return (
     <PageContainer>
-      <PageTitle>Cadastro</PageTitle>
+      <PageTitle>Minha Conta</PageTitle>
       <PageArea>
         {error && <ErrorMessage>{error}</ErrorMessage>}
         <form onSubmit={handleSubmit}>
@@ -71,10 +84,11 @@ const Signin = () => {
                 value={stateLocation}
                 onChange={(e) => setStateLocation(e.target.value)}
                 required
+                disabled={disabled}
               >
-                <option></option>
+                <option>{stateLocation}</option>
                 {stateList.map((state, index) => (
-                  <option key={index} value={state._id}>
+                  <option key={index} value={state.name}>
                     {state.name}
                   </option>
                 ))}
@@ -90,11 +104,12 @@ const Signin = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                autoComplete="off"
               />
             </div>
           </label>
           <label className="area">
-            <div className="area-title">Senha</div>
+            <div className="area-title">Nova Senha</div>
             <div className="area-input">
               <input
                 type="password"
@@ -120,7 +135,10 @@ const Signin = () => {
           <label className="area">
             <div className="area-title"></div>
             <div className="area-input">
-              <button disabled={disabled}>Fazer Cadastro</button>
+              <button onClick={(e) => setEditionMode()} type="button">
+                Alterar
+              </button>
+              <button disabled={disabled}>Salvar</button>
             </div>
           </label>
         </form>
@@ -129,4 +147,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default MyAccount;

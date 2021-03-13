@@ -24,6 +24,29 @@ const apiFetchPost = async (endpoint, body) => {
   }
   return json;
 };
+const apiFetchPut = async (endpoint, body) => {
+  if (!body.token) {
+    let token = Cookies.get('token');
+    if (token) {
+      body.token = token;
+    }
+  }
+  const res = await fetch(BASEAPI + endpoint, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  });
+  const json = await res.json();
+
+  if (json.notallowed) {
+    window.location.href = '/signin';
+    return;
+  }
+  return json;
+};
 const apiFetchGet = async (endpoint, body = []) => {
   if (!body.token) {
     let token = Cookies.get('token');
@@ -73,6 +96,14 @@ const MinervaAPI = () => ({
     });
     return json;
   },
+  alterUser: async (name, password, stateLocation) => {
+    const json = await apiFetchPut('/user/me', {
+      name,
+      password,
+      state: stateLocation,
+    });
+    return json;
+  },
   getStates: async () => {
     const json = await apiFetchGet('/states');
     return json.states;
@@ -91,6 +122,10 @@ const MinervaAPI = () => ({
   },
   addAd: async (fData) => {
     const json = await apiFetchFile('/ad/add', fData);
+    return json;
+  },
+  getMe: async () => {
+    const json = await apiFetchGet('/user/me');
     return json;
   },
 });

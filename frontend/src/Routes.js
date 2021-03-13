@@ -9,6 +9,7 @@ import SignUp from './Pages/SignUp';
 import AdPage from './Pages/AdPage';
 import Ads from './Pages/Ads';
 import AddAd from './Pages/AddAd';
+import MyAccount from './Pages/MyAccount';
 const Routes = () => {
   return (
     <Switch>
@@ -17,6 +18,7 @@ const Routes = () => {
       <MyRoute exact path="/signup" component={SignUp} />
       <MyRoute exact path="/ad/:id" component={AdPage} />
       <MyRoute exact path="/about" component={About} />
+      <MyRoute exact path="/my-account" component={MyAccount} />
       <MyRoute exact path="/ads" component={Ads} />
       <MyRoute private exact path="/post-an-ad">
         <AddAd />
