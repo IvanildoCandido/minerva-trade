@@ -74,3 +74,41 @@ export const PageArea = styled.div`
     }
   }
 `;
+export const MyAds = styled.div`
+  .ads-container {
+    display: block;
+    border: 1px solid white;
+    margin: 10px;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 5px;
+    color: black;
+    background-color: white;
+    width: 25%;
+
+    transition: all ease 0.5s;
+    &:hover {
+      box-shadow: 5px 5px 5px #ccc;
+    }
+    .item-image img {
+      width: 100%;
+      border-radius: 5px;
+    }
+    .item-name {
+      font-weight: bold;
+    }
+    .btn-edit {
+      float: right;
+      margin: 5px;
+      font-size: 18px;
+      cursor: pointer;
+      color: rgb(255, 129, 0);
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+  }
+  .list {
+    display: flex;
+  }
+`;
