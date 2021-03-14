@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
 export const ModalArea = styled.div`
-  width: 100%;
-  height: 100vh;
-  position: absolute;
-  z-index: 100;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  z-index: 99;
   background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
